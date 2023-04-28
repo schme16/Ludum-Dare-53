@@ -1,48 +1,50 @@
+
+ - Your health bar is more than just a health bar
+	1. You are the seagull, steal chips to  gain status and health.
+	2. Health bar as an object in a platformer
+
 - Delivery
-	-  #1: 
+	1. 
    
  - Cartography
-	-  #1: 
+	1. 
    
  - Shelter
-	-  #1: 
+	1. 
    
  - Leave something behind
-	-  #1: 
+	1. 
    
  - Parasite
-	-  #1: 
+	1. 
    
  - The wrong tool for the job
-	-  #1: 
+	1. 
    
  - Ascend
-	-  #1: 
-   
- - Your health bar is more than just a health bar
-	-  #1: 
+	1. 
    
  - Salvage
-	-  #1: 
+	1. 
    
  - Strange machines
-	-  #1: 
+	1. 
    
  - Signal
-	-  #1: 
+	1. 
    
  - Limited visibility
-	-  #1: 
+	1. 
    
  - It spreads
-	-  #1: 
+	1. 
    
  - Clear a path
-	-  #1: 
+	1. 
    
  - Every input does two things
-	-  #1: 
+	1. 
    
  - Start small
-	-  #1: 
+	1. 
    
