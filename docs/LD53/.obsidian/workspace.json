@@ -13,24 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ideas.md",
+                "file": "Delivery - UberRoo.md",
                 "mode": "source",
                 "source": false
               }
             }
-          },
-          {
-            "id": "cfc489783bc4df63",
-            "type": "leaf",
-            "state": {
-              "type": "release-notes",
-              "state": {
-                "currentVersion": "1.1.16"
-              }
-            }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -96,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Ideas.md",
+                "file": "Delivery - UberRoo.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -113,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Ideas.md",
+                "file": "Delivery - UberRoo.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -136,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Ideas.md"
+                "file": "Delivery - UberRoo.md"
               }
             }
           }
@@ -154,11 +143,19 @@
       "canvas:Create new canvas": false,
       "daily-notes:Open today's daily note": false,
       "templates:Insert template": false,
-      "command-palette:Open command palette": false
+      "command-palette:Open command palette": false,
+      "obsidian-livesync:Replicate": false,
+      "obsidian-livesync:Show log": false
     }
   },
-  "active": "cfc489783bc4df63",
+  "active": "d14f8c70f2e117dc",
   "lastOpenFiles": [
-    "Ideas.md"
+    "Pasted image 20230428233210.png",
+    "Delivery - UberRoo.md",
+    "Ideas.md",
+    "Delivery - UberRoo.md",
+    "Delivery - UbeRoo.md",
+    "Delivery - UberROO.md",
+    "Delivery.md"
   ]
 }
