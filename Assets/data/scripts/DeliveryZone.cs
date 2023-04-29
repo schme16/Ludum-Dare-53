@@ -5,6 +5,7 @@ using UnityEngine;
 public class DeliveryZone : MonoBehaviour {
 	public GameManager gm;
 	public int deliveryID;
+	public bool fade = false;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -13,11 +14,27 @@ public class DeliveryZone : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		
+		//TODO make this fade the delivery zone out
+		if (fade) {
+			
+		}
 	}
 
 	private void OnTriggerEnter(Collider other) {
 		if (gm.meal != null) {
-			gm.handOverMeal(deliveryID);
+			PlayerScript player = null;
+			if (other.transform.tag == "Player") {
+				player = other.transform.GetComponent<PlayerScript>();
+			}
+
+			else if (other.transform.tag == "subplayer") {
+				player = other.transform.parent.transform.GetComponent<PlayerScript>();
+			}
+
+			if (player) {
+				gm.handOverMeal(deliveryID);
+			}
 		}
 	}
 }

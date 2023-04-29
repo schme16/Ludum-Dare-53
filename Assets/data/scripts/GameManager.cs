@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour {
 
 			meal.transform.SetParent(zone.transform);
 			meal.transform.localPosition = new Vector3(0, 0, 0);
+			zone.fade = true;
+			meal.delivered = true;
 			meal = null;
 		}
 	}
