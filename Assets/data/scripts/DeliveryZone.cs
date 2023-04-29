@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DeliveryZone : MonoBehaviour {
 	public GameManager gm;
+	public int deliveryID;
 
 	// Start is called before the first frame update
 	void Start() {
@@ -15,8 +16,8 @@ public class DeliveryZone : MonoBehaviour {
 	}
 
 	private void OnTriggerEnter(Collider other) {
-		if (!gm.meal != null) {
-			gm.handOverMeal();
+		if (gm.meal != null) {
+			gm.handOverMeal(deliveryID);
 		}
 	}
 }

@@ -22,13 +22,14 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public void handOverMeal() {
-		if (meal) {
+	public void handOverMeal(int deliveryID) {
+		if (meal.deliveryID == deliveryID) {
 			Transform pt = Instantiate(popupText).transform;
 			pt.SetParent(canvas);
 
 			meal.transform.SetParent(zone.transform);
 			meal.transform.localPosition = new Vector3(0, 0, 0);
+			meal = null;
 		}
 	}
 }

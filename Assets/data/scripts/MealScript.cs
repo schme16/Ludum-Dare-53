@@ -7,6 +7,8 @@ public class MealScript : MonoBehaviour {
 	private bool isHeld = false;
 	public GameManager gm;
 	public DeliveryZone deliveryZone;
+	public int deliveryID;
+
 	// Start is called before the first frame update
 	void Start() {
 		gm = FindFirstObjectByType<GameManager>();
