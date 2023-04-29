@@ -5,19 +5,21 @@ using TMPro;
 
 public class PopupText : MonoBehaviour {
 	// Start is called before the first frame update
-	public float lifetime = 5;
+	public float lifetime = 3;
 	public TextMeshProUGUI text;
 	float time = 0;
-	private float size;
+	private Vector3 size;
 	void Start() {
 		text = transform.Find("Text (TMP)").GetComponent<TextMeshProUGUI>();
-		size = text.fontSize;
+		size = text.transform.localScale;
 	}
 
 	// Update is called once per frame
 	void Update() {
-		text.fontSize = Mathf.Lerp(fontSize,  fontSize+ 10, time / lifetime); 
 		time += Time.deltaTime;
+		text.transform.localScale = Vector3.Lerp(size,  size * 5, time / lifetime); 
+		text.color = Color.Lerp(new Color(255,255,255,1), new Color(255,255,255,0), time / lifetime); 
+
 		if (time > lifetime) {
 			Destroy(gameObject);
 		}

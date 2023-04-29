@@ -16,15 +16,19 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		if (Input.GetKeyDown(KeyCode.G)) {
+			Transform pt = Instantiate(popupText).transform;
+			pt.SetParent(canvas);
+		}
 	}
 
 	public void handOverMeal() {
 		if (meal) {
 			Transform pt = Instantiate(popupText).transform;
 			pt.SetParent(canvas);
-			
+
 			meal.transform.SetParent(zone.transform);
-			meal.transform.localPosition = new Vector3(0,0,0);
+			meal.transform.localPosition = new Vector3(0, 0, 0);
 		}
 	}
 }
