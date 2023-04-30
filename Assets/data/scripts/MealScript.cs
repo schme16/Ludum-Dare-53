@@ -46,6 +46,7 @@ public class MealScript : MonoBehaviour {
 		if (player != null && gm.meal == null && !delivered) {
 			playerInRange = true;
 			text.gameObject.SetActive(playerInRange);
+			text.text = "Collect meal #" + deliveryID +" (E)";
 		}
 	}
 
