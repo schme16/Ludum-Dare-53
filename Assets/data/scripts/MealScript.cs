@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Unity.Mathematics;
 
 public class MealScript : MonoBehaviour {
 	private bool isHeld = false;
@@ -29,6 +30,8 @@ public class MealScript : MonoBehaviour {
 			gm.meal = transform.GetComponent<MealScript>();
 			transform.SetParent(player.mealHolder);
 			transform.localPosition = new Vector3(0, 0, 0);
+			transform.rotation = new Quaternion(0, 0, 0, 0);
+
 			text.gameObject.SetActive(false);
 		}
 	}
@@ -46,7 +49,7 @@ public class MealScript : MonoBehaviour {
 		if (player != null && gm.meal == null && !delivered) {
 			playerInRange = true;
 			text.gameObject.SetActive(playerInRange);
-			text.text = "Collect meal #" + deliveryID +" (E)";
+			text.text = "Collect meal #" + deliveryID + " (E)";
 		}
 	}
 

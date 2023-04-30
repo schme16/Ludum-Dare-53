@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (Input.GetKeyDown(KeyCode.G)) {
+		if (Input.GetKeyDown(KeyCode.P)) {
 			Transform pt = Instantiate(popupText).transform;
 			pt.SetParent(canvas);
 		}
@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
 
 			meal.transform.SetParent(zone.transform);
 			meal.transform.localPosition = new Vector3(0, 0, 0);
+			transform.rotation = new Quaternion(0, 0, 0, 0);
 			zone.fade = true;
 			meal.delivered = true;
 			meal = null;
