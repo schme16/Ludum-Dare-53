@@ -8,14 +8,14 @@
         "type": "tabs",
         "children": [
           {
-            "id": "d14f8c70f2e117dc",
+            "id": "cfc489783bc4df63",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
                 "file": "Delivery - UberRoo.md",
-                "mode": "source",
-                "source": false
+                "mode": "preview",
+                "source": true
               }
             }
           }
@@ -148,14 +148,13 @@
       "obsidian-livesync:Show log": false
     }
   },
-  "active": "d14f8c70f2e117dc",
+  "active": "cfc489783bc4df63",
   "lastOpenFiles": [
-    "Pasted image 20230428233210.png",
     "Delivery - UberRoo.md",
-    "Ideas.md",
-    "Delivery - UberRoo.md",
-    "Delivery - UbeRoo.md",
+    "Delivery - UberRooasd.md",
     "Delivery - UberROO.md",
-    "Delivery.md"
+    "Ideas.md",
+    "Untitled.md",
+    "Pasted image 20230428233210.png"
   ]
 }
