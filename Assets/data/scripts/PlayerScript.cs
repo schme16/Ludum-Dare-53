@@ -7,6 +7,7 @@ public class PlayerScript : MonoBehaviour {
 	public float speed = 1;
 	public float speedModifier = 0;
 	public float turnSpeed = 2;
+	public Transform[] wheels;
 	public Transform mealHolder;
 	Rigidbody rb;
 	private Camera cam;
@@ -29,5 +30,7 @@ public class PlayerScript : MonoBehaviour {
 		if (y != 0) {
 			rb.AddForce(transform.forward * (y * (speed + speedModifier)));
 		}
+		wheels[0].Rotate(new Vector3(0, -rb.velocity.x, 0));
+		wheels[1].Rotate(new Vector3(0, -rb.velocity.x, 0));
 	}
 }

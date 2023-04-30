@@ -19,7 +19,7 @@ public class MealScript : MonoBehaviour {
 	void Start() {
 		gm = FindFirstObjectByType<GameManager>();
 		player = FindFirstObjectByType<PlayerScript>();
-		text = GameObject.Find("/player/Main Camera/Canvas/Collect meal").GetComponent<TextMeshProUGUI>();
+		text = GameObject.Find("/Game Manager/Canvas/Collect meal").GetComponent<TextMeshProUGUI>();
 	}
 
 	// Update is called once per frame
