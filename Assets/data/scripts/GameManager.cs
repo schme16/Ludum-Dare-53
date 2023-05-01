@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour {
 	public float maxTimeBetweenOrders;
 	public float timeBetweenOrders;
 	public MealScript meal;
+	public Transform[] nah;
+	public Vector2 starOrig;
+	public RectTransform star;
 	public DeliveryZone[] zones;
 	public int ratings;
 	public bool gameover = false;
@@ -25,6 +28,7 @@ public class GameManager : MonoBehaviour {
 	public int cancelledOrders;
 
 	void Start() {
+		starOrig = star.sizeDelta; 
 		gameover = false;
 		cancelledOrders = 0;
 		player = FindFirstObjectByType<PlayerScript>();
@@ -55,7 +59,14 @@ public class GameManager : MonoBehaviour {
 				cancelledOrders++;
 			}
 		}
+		
+		nah[0].gameObject.SetActive(cancelledOrders > 2.1f);
+		nah[1].gameObject.SetActive(cancelledOrders > 1.1f);
+		nah[2].gameObject.SetActive(cancelledOrders > 0.1f);
 
+
+		star.sizeDelta = new Vector2(starOrig.x * (rating/5), starOrig.y);
+		
 		if (!gameover && cancelledOrders >= 3) {
 			gameOver();
 		}
