@@ -3,7 +3,67 @@ guid: 6379395f93a79144b98a565a49eed323
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ArmoredGlove_Gauntlet1_standardSurface2
+    second: {fileID: 2100000, guid: 7c89fffae68b48e499bb3665ada3bb6b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BaseballCap_standardSurface2
+    second: {fileID: 2100000, guid: fde463553aba4fc4a85855ae600dd0e5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Goggles2_standardSurface2
+    second: {fileID: 2100000, guid: 7693f437153ad354cbe32455e3f408de, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shorts_standardSurface2
+    second: {fileID: 2100000, guid: 9bfa30fb0d0505b4a9cede61e57e2411, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TankTop1_standardSurface2
+    second: {fileID: 2100000, guid: e2911f9fb4df81843ba514d222e42aed, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: blinn1
+    second: {fileID: 2100000, guid: 3122d8b71d0cb5741b126145c92f6320, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Gloves_Texture
+    second: {fileID: 2800000, guid: b3bade94ba3311148ba7a1df25936b7c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Googles_Straps_Texture
+    second: {fileID: 2800000, guid: 3e24bd754596eae46b3d5cbd001e591b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Helmet_Texture
+    second: {fileID: 2800000, guid: a5c89abf9800a5142ae164a5515fdb67, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Roo_Texture
+    second: {fileID: 2800000, guid: 6e24778702e9613478dc80b83745dc09, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Shirt_Texture
+    second: {fileID: 2800000, guid: 487e4f9b269bf1f448f56f4966e85fb5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Shorts_Texture
+    second: {fileID: 2800000, guid: 0fd5eaf326648404d8c4f1d598e56a62, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -33,7 +93,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 30
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -87,7 +147,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 30
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0

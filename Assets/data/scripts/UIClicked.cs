@@ -11,11 +11,11 @@ public class UIHoveredClick : MonoBehaviour, IPointerUpHandler, IPointerDownHand
 
 	public void OnPointerUp(PointerEventData eventData) {
 		if (phone.hovered && !phone.show) {
-			phone.show = true;
+			phone.ShowUI(true);
 		}
 	}
 
 	public void OnPointerDown(PointerEventData eventData) {
-		throw new NotImplementedException();
+		//throw new NotImplementedException();
 	}
 }

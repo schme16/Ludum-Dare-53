@@ -9,6 +9,7 @@ public class OrderScript : MonoBehaviour {
 	public float time;
 	public bool acceptedOrder;
 	public bool declinedOrder;
+	public int deliveryID;
 	public Transform[] takeoutIcons;
 	public Transform takeoutIcon;
 
