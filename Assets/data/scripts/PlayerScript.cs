@@ -10,9 +10,11 @@ public class PlayerScript : MonoBehaviour {
 	public float turnSpeed = 2;
 	public MealScript meal;
 	public Transform[] wheels;
+	public AudioSource wheelSound;
+	
 	public Transform mealHolder;
-	float maxSprintTime = 5;
-	float sprintTime = 0;
+	public float maxSprintTime = 3;
+	public float sprintTime = 0;
 	Rigidbody rb;
 	private Camera cam;
 
@@ -24,13 +26,12 @@ public class PlayerScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update() {
 		speedModifier = 0;
-		
 		if (Input.GetKey(KeyCode.LeftShift) && sprintTime < maxSprintTime) {
 			sprintTime += Time.deltaTime;
-			speedModifier = 2;
+			speedModifier = 15;
 		}
 
-		if (Input.GetKey(KeyCode.LeftShift) && sprintTime > 0) {
+		if (!Input.GetKey(KeyCode.LeftShift) && sprintTime > 0) {
 			Mathf.Max((sprintTime -= (Time.deltaTime * 2)), 0);
 		}
 
@@ -44,6 +45,11 @@ public class PlayerScript : MonoBehaviour {
 
 		if (y != 0) {
 			rb.AddForce(transform.forward * (y * (speed + speedModifier)));
+			wheelSound.Play();
+			wheelSound.loop = true;
+		}
+		else {
+			wheelSound.loop = false;
 		}
 
 		var velocity = Vector3.Dot(rb.velocity, transform.forward);

@@ -24,11 +24,16 @@ public class GameManager : MonoBehaviour {
 	public DeliveryZone[] zones;
 	public int ratings;
 	public bool gameover = false;
-	
+	public AudioSource sound;
+	public AudioClip newSound;
+	public AudioClip noSound;
+	public AudioClip seagull;
+
+
 	public int cancelledOrders;
 
 	void Start() {
-		starOrig = star.sizeDelta; 
+		starOrig = star.sizeDelta;
 		gameover = false;
 		cancelledOrders = 0;
 		player = FindFirstObjectByType<PlayerScript>();
@@ -45,7 +50,6 @@ public class GameManager : MonoBehaviour {
 		if (meal == null) {
 			timeBetweenOrders += Time.deltaTime;
 			if (timeBetweenOrders > maxTimeBetweenOrders) {
-				Debug.Log(timeBetweenOrders);
 				createOrder();
 				acceptOrder(meal);
 				timeBetweenOrders = 0;
@@ -56,17 +60,18 @@ public class GameManager : MonoBehaviour {
 			if (order.time > order.allocatedDeliveryTime + 30) {
 				showPopupWithFade("Order Cancelled by Customer!");
 				cancelOrder(0.1f);
+				sound.PlayOneShot(noSound);
 				cancelledOrders++;
 			}
 		}
-		
+
 		nah[0].gameObject.SetActive(cancelledOrders > 2.1f);
 		nah[1].gameObject.SetActive(cancelledOrders > 1.1f);
 		nah[2].gameObject.SetActive(cancelledOrders > 0.1f);
 
 
-		star.sizeDelta = new Vector2(starOrig.x * (rating/5), starOrig.y);
-		
+		star.sizeDelta = new Vector2(starOrig.x * (rating / 5), starOrig.y);
+
 		if (!gameover && cancelledOrders >= 3) {
 			gameOver();
 		}
@@ -97,6 +102,7 @@ public class GameManager : MonoBehaviour {
 		else {
 			showPopupWithFade("Wrong Order Delivered!");
 			cancelOrder(Random.Range(0.5f, 1.5f));
+			sound.PlayOneShot(noSound);
 		}
 	}
 
@@ -116,6 +122,7 @@ public class GameManager : MonoBehaviour {
 	//Accepts the order
 	public void acceptOrder(MealScript meal) {
 		if (order.meal == null) {
+			sound.PlayOneShot(newSound);
 			phone.ChangeScreen(2);
 
 			//TODO: make this calculate a new time based on number of delivered orders + a random variance
@@ -181,8 +188,10 @@ public class GameManager : MonoBehaviour {
 		phone.show = false;
 
 		//Hide and unset the zone
-		order.zone.gameObject.SetActive(false);
-		order.zone = null;
+		if (order.zone != null) {
+			order.zone.gameObject.SetActive(false);
+			order.zone = null;
+		}
 
 		//Set the delivery ID
 		order.deliveryID = 0;
@@ -212,6 +221,7 @@ public class GameManager : MonoBehaviour {
 			PlayerPrefs.SetInt("pbDeliveries", ratings);
 			PlayerPrefs.SetString("pb", ratings + " Deliveries - " + rating.ToString().Substring(0, 3) + " Stars");
 		}
+
 		StartCoroutine(getRequest(rating.ToString(), ratings.ToString()));
 	}
 
@@ -230,7 +240,8 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator getRequest(string stars, string deliveries) {
 		Debug.Log(11111);
-		UnityWebRequest uwr = UnityWebRequest.Get("https://ldjam53.shanegadsby.com/post-score?score=" + deliveries + "&name=" + stars);
+		UnityWebRequest uwr =
+			UnityWebRequest.Get("https://ldjam53.shanegadsby.com/post-score?score=" + deliveries + "&name=" + stars);
 		yield return uwr.SendWebRequest();
 
 		if (uwr.isNetworkError) {
@@ -239,6 +250,7 @@ public class GameManager : MonoBehaviour {
 		else {
 			Debug.Log("Received: " + uwr.downloadHandler.text);
 		}
+
 		Debug.Log(22222);
 		SceneManager.LoadScene("GameOver");
 	}
