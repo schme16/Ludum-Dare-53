@@ -14,27 +14,23 @@ public class DeliveryZone : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		
 		//TODO make this fade the delivery zone out
 		if (fade) {
-			
 		}
 	}
 
 	private void OnTriggerEnter(Collider other) {
-		if (gm.meal != null) {
-			PlayerScript player = null;
-			if (other.transform.tag == "Player") {
-				player = other.transform.GetComponent<PlayerScript>();
-			}
+		PlayerScript player = null;
+		if (other.transform.CompareTag("Player")) {
+			player = other.transform.GetComponent<PlayerScript>();
+		}
 
-			else if (other.transform.tag == "subplayer") {
-				player = other.transform.parent.transform.GetComponent<PlayerScript>();
-			}
+		else if (other.transform.CompareTag("subplayer")) {
+			player = other.transform.parent.transform.GetComponent<PlayerScript>();
+		}
 
-			if (player) {
-				gm.handOverMeal(deliveryID);
-			}
+		if (player != null && player.meal != null) {
+			gm.handOverMeal(player.meal, player.meal.deliveryID == deliveryID);
 		}
 	}
 }

@@ -7,6 +7,7 @@ public class PlayerScript : MonoBehaviour {
 	public float speed = 1;
 	public float speedModifier = 0;
 	public float turnSpeed = 2;
+	public MealScript meal;
 	public Transform[] wheels;
 	public Transform mealHolder;
 	Rigidbody rb;

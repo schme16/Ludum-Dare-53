@@ -27,7 +27,7 @@ public class MealScript : MonoBehaviour {
 	void Update() {
 		if (!isHeld && playerInRange && Input.GetKeyDown(KeyCode.E)) {
 			isHeld = true;
-			gm.meal = transform.GetComponent<MealScript>();
+			player.meal = transform.GetComponent<MealScript>();
 			transform.SetParent(player.mealHolder);
 			transform.localPosition = new Vector3(0, 0, 0);
 			transform.rotation = new Quaternion(0, 0, 0, 0);
@@ -46,7 +46,7 @@ public class MealScript : MonoBehaviour {
 			player = other.transform.parent.transform.GetComponent<PlayerScript>();
 		}
 
-		if (player != null && gm.meal == null && !delivered) {
+		if (player != null && player.meal == null && !delivered) {
 			playerInRange = true;
 			text.gameObject.SetActive(playerInRange);
 			text.text = "Collect meal #" + deliveryID + " (E)";

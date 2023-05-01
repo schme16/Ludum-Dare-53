@@ -1,0 +1,25 @@
+fileFormatVersion: 2
+guid: 52b1f4e63e49f4349bfd28b9565f7293
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - ClanOT
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 324e54765cab4ca4bb757474849757ef, type: 3}
+  - {fileID: 12800000, guid: 218af55d85f697e4caeb49a0840292e8, type: 3}
+  - {fileID: 12800000, guid: 80eb8c9e502dcac4a9da82507f59c541, type: 3}
+  - {fileID: 12800000, guid: 31c9d5f36172d214dbb2df4a43dd2761, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
