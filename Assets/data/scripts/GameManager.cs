@@ -4,6 +4,8 @@ using System.Net.Sockets;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
 	// Start is called before the first frame update
@@ -13,10 +15,18 @@ public class GameManager : MonoBehaviour {
 	public OrderScript order;
 	public PhoneUIScript phone;
 	public float rating;
+	public float maxTimeBetweenOrders;
+	public float timeBetweenOrders;
 	public MealScript meal;
+	public DeliveryZone[] zones;
 	public int ratings;
+	public bool gameover = false;
+	
+	public int cancelledOrders;
 
 	void Start() {
+		gameover = false;
+		cancelledOrders = 0;
 		player = FindFirstObjectByType<PlayerScript>();
 	}
 
@@ -25,6 +35,29 @@ public class GameManager : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.P)) {
 			showPopupWithFade("Test!");
 			createOrder();
+			buttonAcceptOrder();
+		}
+
+		if (meal == null) {
+			timeBetweenOrders += Time.deltaTime;
+			if (timeBetweenOrders > maxTimeBetweenOrders) {
+				Debug.Log(timeBetweenOrders);
+				createOrder();
+				acceptOrder(meal);
+				timeBetweenOrders = 0;
+				maxTimeBetweenOrders = Random.Range(3, 15);
+			}
+		}
+		else {
+			if (order.time > order.allocatedDeliveryTime + 30) {
+				showPopupWithFade("Order Cancelled by Customer!");
+				cancelOrder(0.1f);
+				cancelledOrders++;
+			}
+		}
+
+		if (!gameover && cancelledOrders >= 3) {
+			gameOver();
 		}
 	}
 
@@ -32,11 +65,7 @@ public class GameManager : MonoBehaviour {
 		meal.transform.SetParent(order.zone.transform);
 		meal.transform.localPosition = new Vector3(0, 0, 0);
 		transform.rotation = new Quaternion(0, 0, 0, 0);
-		//order.zone.fade = true;
-		order.zone = null;
 		meal.delivered = true;
-		player.meal = null;
-		order.meal = null;
 
 		//If it's the correct order
 		if (correctOrder) {
@@ -63,6 +92,8 @@ public class GameManager : MonoBehaviour {
 	public void showPopupWithFade(string text) {
 		GameObject pt = Instantiate(popupText);
 		pt.transform.SetParent(canvas);
+		pt.transform.localScale = new Vector3(1, 1, 1);
+		pt.transform.position = new Vector3(0, 0, 0);
 
 		var script = pt.GetComponent<PopupText>();
 
@@ -77,19 +108,18 @@ public class GameManager : MonoBehaviour {
 			phone.ChangeScreen(2);
 
 			//TODO: make this calculate a new time based on number of delivered orders + a random variance
-			order.allocatedDeliveryTime = 60f;
+			order.allocatedDeliveryTime = Mathf.Max(120f - (ratings * 2), 30);
 
 			//Pick a random meal
 			order.meal = meal; //meals[Random.Range(0, meals.Length - 1)];
 
-			//Get a list of all zones
-			var zones = Object.FindObjectsOfType<DeliveryZone>();
-
 			//Pick a random zone
-			order.zone = zones[Random.Range(0, zones.Length - 1)];
+			var rand = Random.Range(1, zones.Length - 1);
+			order.zone = zones[rand];
 			foreach (var zone in zones) {
 				zone.gameObject.SetActive(false);
 			}
+
 			order.zone.gameObject.SetActive(true);
 
 			//Set the delivery ID
@@ -101,14 +131,9 @@ public class GameManager : MonoBehaviour {
 			//Reset the timer
 			order.time = 0;
 
-			//Reset the order accepted/declined flags
-			order.acceptedOrder = true;
-			order.declinedOrder = false;
-
 
 			//Show the meal preview
 			foreach (var mealPreview in phone.mealPreviews) {
-				Debug.Log(mealPreview.name == order.meal.prefabName);
 				mealPreview.gameObject.SetActive(false);
 				if (mealPreview.name == order.meal.prefabName) {
 					mealPreview.SetActive(true);
@@ -123,7 +148,7 @@ public class GameManager : MonoBehaviour {
 		meal = meals[Random.Range(0, meals.Length - 1)];
 
 		//Show incoming order UI
-		phone.ChangeScreen(1);
+		//phone.ChangeScreen(2);
 		phone.show = true;
 	}
 
@@ -133,17 +158,19 @@ public class GameManager : MonoBehaviour {
 
 	public void cancelOrder(float rating) {
 		dropFood();
-		
+
 		//null out the meal
 		order.meal = null;
-		
+		meal = null;
+
 		//Change back to the logo screen
 		phone.ChangeScreen(0);
-		
+
 		//Hide the phone
 		phone.show = false;
-		
-		//Pick a random zone
+
+		//Hide and unset the zone
+		order.zone.gameObject.SetActive(false);
 		order.zone = null;
 
 		//Set the delivery ID
@@ -153,17 +180,28 @@ public class GameManager : MonoBehaviour {
 		//Reset the timer
 		order.time = 0;
 
-		//Reset the order accepted/declined flags
-		order.acceptedOrder = false;
-		order.declinedOrder = true;
+
 		updateRating(rating != null && rating != 0 ? rating : 0.5f);
 	}
 
 	public void dropFood() {
-		if (order.meal.gameObject != null) {
-			Destroy(order.meal.gameObject);
+		if (player.meal != null) {
+			phone.dropFoodButton.SetActive(false);
+			player.meal.parent.Spawn();
+			Destroy(player.meal.gameObject);
 		}
+
 		player.meal = null;
+	}
+
+	public void gameOver() {
+		gameover = true;
+		int lastPB = PlayerPrefs.GetInt("pbDeliveries");
+		if (ratings > lastPB) {
+			PlayerPrefs.SetInt("pbDeliveries", ratings);
+			PlayerPrefs.SetString("pb", ratings + " Deliveries - " + rating.ToString().Substring(0, 3) + " Stars");
+		}
+		StartCoroutine(getRequest(rating.ToString(), ratings.ToString()));
 	}
 
 	//Creates the order
@@ -176,5 +214,21 @@ public class GameManager : MonoBehaviour {
 		}
 
 		ratings++;
+	}
+
+
+	IEnumerator getRequest(string stars, string deliveries) {
+		Debug.Log(11111);
+		UnityWebRequest uwr = UnityWebRequest.Get("https://ldjam53.shanegadsby.com/post-score?score=" + deliveries + "&name=" + stars);
+		yield return uwr.SendWebRequest();
+
+		if (uwr.isNetworkError) {
+			Debug.Log("Error While Sending: " + uwr.error);
+		}
+		else {
+			Debug.Log("Received: " + uwr.downloadHandler.text);
+		}
+		Debug.Log(22222);
+		SceneManager.LoadScene("GameOver");
 	}
 }

@@ -5,8 +5,17 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/data/scenes/MainMenu.unity
+    guid: c10e39eba732810458d86489a7f453ec
+  - enabled: 1
+    path: Assets/data/scenes/game.unity
+    guid: 931135d4c37b3d3419ecfcf3809bba03
+  - enabled: 1
+    path: Assets/data/scenes/GameOver.unity
+    guid: a6cfcbd6c25c7654290c27a660c8096a
+  - enabled: 1
+    path: Assets/data/scenes/Highscores.unity
+    guid: 4478158daf711e546ae1d824d6d83b89
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

@@ -12,6 +12,7 @@ public class MealScript : MonoBehaviour {
 	private bool playerInRange = false;
 	public bool delivered = false;
 	public GameManager gm;
+	public MealSpawner parent;
 	public DeliveryZone deliveryZone;
 	public int deliveryID;
 	public TextMeshProUGUI text;
@@ -24,13 +25,14 @@ public class MealScript : MonoBehaviour {
 		deliveryID = Random.Range(1000, 9999);
 		gm = FindFirstObjectByType<GameManager>();
 		player = FindFirstObjectByType<PlayerScript>();
-		text = GameObject.Find("/Game Manager/Canvas/Collect meal").GetComponent<TextMeshProUGUI>();
+		text = GameObject.Find("/Game Manager/phone-canvas/Collect meal").GetComponent<TextMeshProUGUI>();
 	}
 
 	// Update is called once per frame
 	void Update() {
-		if (!isHeld && playerInRange && Input.GetKeyDown(KeyCode.E)) {
+		if (!isHeld && playerInRange && player.meal == null && Input.GetKeyDown(KeyCode.E)) {
 			isHeld = true;
+			gm.phone.dropFoodButton.SetActive(true);
 			player.meal = transform.GetComponent<MealScript>();
 			transform.SetParent(player.mealHolder);
 			transform.localPosition = new Vector3(0, 0, 0);
@@ -50,7 +52,8 @@ public class MealScript : MonoBehaviour {
 			player = other.transform.parent.transform.GetComponent<PlayerScript>();
 		}
 
-		if (player != null && player.meal == null && !delivered) {
+		if (player != null && player.meal == null && !delivered && gm.order.deliveryID != 0 &&
+			gm.order.deliveryID != null) {
 			playerInRange = true;
 			text.gameObject.SetActive(playerInRange);
 			text.text = "Collect meal #" + deliveryID + " (E)";

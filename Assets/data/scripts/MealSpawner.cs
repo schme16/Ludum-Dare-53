@@ -6,14 +6,19 @@ using UnityEngine;
 public class MealSpawner : MonoBehaviour {
 	public GameObject mealPrefab;
 	public GameObject currentMeal;
-	public string prefabName;
-	
+
 	// Start is called before the first frame update
 	void Start() {
+		Spawn();
+	}
+
+	public void Spawn() {
 		currentMeal = Instantiate(mealPrefab);
 		currentMeal.transform.SetParent(transform);
 		currentMeal.transform.localPosition = new Vector3(0, 0, 0);
-		currentMeal.GetComponent<MealScript>().prefabName = mealPrefab.name;
+		MealScript meal = currentMeal.GetComponent<MealScript>();
+		meal.prefabName = mealPrefab.name;
+		meal.parent = this;
 	}
 
 	// Update is called once per frame

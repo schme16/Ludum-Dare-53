@@ -76,3 +76,4 @@ crashlytics-build.properties
 /Creative docs/*
 *.psd
 *.psd.meta
+server/

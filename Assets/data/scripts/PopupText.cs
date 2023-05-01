@@ -22,6 +22,7 @@ public class PopupText : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		transform.localPosition = new Vector3(0,0,0);
 		time += Time.deltaTime;
 		textMesh.transform.localScale = Vector3.Lerp(size, size * 5, time / lifetime);
 		textMesh.color = Color.Lerp(new Color(255, 255, 255, 1), new Color(255, 255, 255, 0), time / lifetime);

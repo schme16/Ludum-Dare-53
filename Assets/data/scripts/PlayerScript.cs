@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerScript : MonoBehaviour {
 	// Start is called before the first frame update
@@ -10,6 +11,8 @@ public class PlayerScript : MonoBehaviour {
 	public MealScript meal;
 	public Transform[] wheels;
 	public Transform mealHolder;
+	float maxSprintTime = 5;
+	float sprintTime = 0;
 	Rigidbody rb;
 	private Camera cam;
 
@@ -20,6 +23,17 @@ public class PlayerScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		speedModifier = 0;
+		
+		if (Input.GetKey(KeyCode.LeftShift) && sprintTime < maxSprintTime) {
+			sprintTime += Time.deltaTime;
+			speedModifier = 2;
+		}
+
+		if (Input.GetKey(KeyCode.LeftShift) && sprintTime > 0) {
+			Mathf.Max((sprintTime -= (Time.deltaTime * 2)), 0);
+		}
+
 		var x = Input.GetAxis("Horizontal");
 		var y = Input.GetAxis("Vertical");
 

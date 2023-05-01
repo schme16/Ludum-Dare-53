@@ -16,7 +16,9 @@ public class PhoneUIScript : MonoBehaviour {
 	public float hideY;
 	public float peakY;
 	public int screen;
+	public TextMeshProUGUI countdown;
 	public GameObject[] screens;
+	public GameObject dropFoodButton;
 	public TextMeshProUGUI[] orderNumberText;
 	public GameObject[] mealPreviews;
 	public RectTransform rect;
