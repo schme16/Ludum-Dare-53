@@ -12,8 +12,8 @@ public class MealSpawner : MonoBehaviour {
 	void Start() {
 		currentMeal = Instantiate(mealPrefab);
 		currentMeal.transform.SetParent(transform);
-		currentMeal.transform.position = new Vector3(0, 0, 0);
-		prefabName = PrefabUtility.GetCorrespondingObjectFromSource(currentMeal).name;
+		currentMeal.transform.localPosition = new Vector3(0, 0, 0);
+		currentMeal.GetComponent<MealScript>().prefabName = mealPrefab.name;
 	}
 
 	// Update is called once per frame

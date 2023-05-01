@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class PhoneUIScript : MonoBehaviour {
@@ -16,6 +17,7 @@ public class PhoneUIScript : MonoBehaviour {
 	public float peakY;
 	public int screen;
 	public GameObject[] screens;
+	public TextMeshProUGUI[] orderNumberText;
 	public GameObject[] mealPreviews;
 	public RectTransform rect;
 
@@ -44,6 +46,11 @@ public class PhoneUIScript : MonoBehaviour {
 
 	public void ToggleUI() {
 		show = !show;
+	}
+	public void UpdateOrderNumberText(int text) {
+		foreach (var ONText in orderNumberText) {
+			ONText.text = text.ToString();
+		}
 	}
 
 	public void ChangeScreen(int index) {

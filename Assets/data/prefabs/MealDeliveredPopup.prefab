@@ -181,6 +181,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 849057ae48dcf4b46bb7eb2111f016f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lifetime: 0.75
+  lifetime: 1.75
   textMesh: {fileID: 8289165378428378557}
   text: 
+  currentScreen: {fileID: 0}
+  screens: []
+  size: {x: 0, y: 0, z: 0}
+  rect: {fileID: 0}

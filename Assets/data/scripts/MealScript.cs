@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Unity.Mathematics;
+using UnityEditor;
+using Random = UnityEngine.Random;
 
 public class MealScript : MonoBehaviour {
 	private bool isHeld = false;
@@ -14,10 +16,12 @@ public class MealScript : MonoBehaviour {
 	public int deliveryID;
 	public TextMeshProUGUI text;
 	public PlayerScript player;
+	public string prefabName;
 
 
 	// Start is called before the first frame update
 	void Start() {
+		deliveryID = Random.Range(1000, 9999);
 		gm = FindFirstObjectByType<GameManager>();
 		player = FindFirstObjectByType<PlayerScript>();
 		text = GameObject.Find("/Game Manager/Canvas/Collect meal").GetComponent<TextMeshProUGUI>();

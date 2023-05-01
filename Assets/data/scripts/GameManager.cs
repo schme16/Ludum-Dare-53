@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour {
 	public Transform canvas;
 	public OrderScript order;
 	public PhoneUIScript phone;
-	public DeliveryZone[] zones;
 	public float rating;
+	public MealScript meal;
 	public int ratings;
 
 	void Start() {
@@ -43,20 +43,20 @@ public class GameManager : MonoBehaviour {
 			//Was it under the allocated delivery time?
 			if (order.time <= order.allocatedDeliveryTime) {
 				showPopupWithFade("Order Delivered Successfully!");
-				updateRating(Random.Range(4f, 5f));
+				cancelOrder(Random.Range(4f, 5f));
 			}
 
 			//Was it late?
 			else {
 				showPopupWithFade("Order Delivered Late!");
-				updateRating(Random.Range(2f, 3.5f));
+				cancelOrder(Random.Range(2f, 3.5f));
 			}
 		}
 
 		//Was it the wrong order?
 		else {
 			showPopupWithFade("Wrong Order Delivered!");
-			updateRating(Random.Range(0.5f, 1.5f));
+			cancelOrder(Random.Range(0.5f, 1.5f));
 		}
 	}
 
@@ -71,44 +71,99 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	//Creates the order
-	public void createOrder() {
+	//Accepts the order
+	public void acceptOrder(MealScript meal) {
 		if (order.meal == null) {
+			phone.ChangeScreen(2);
+
 			//TODO: make this calculate a new time based on number of delivered orders + a random variance
 			order.allocatedDeliveryTime = 60f;
 
-			//Get a list of all meals
-			var meals = Object.FindObjectsOfType<MealScript>();
-
 			//Pick a random meal
-			order.meal = player.meal = meals[Random.Range(0, meals.Length - 1)];
+			order.meal = meal; //meals[Random.Range(0, meals.Length - 1)];
+
+			//Get a list of all zones
+			var zones = Object.FindObjectsOfType<DeliveryZone>();
+
+			//Pick a random zone
+			order.zone = zones[Random.Range(0, zones.Length - 1)];
+			foreach (var zone in zones) {
+				zone.gameObject.SetActive(false);
+			}
+			order.zone.gameObject.SetActive(true);
 
 			//Set the delivery ID
-			order.deliveryID = Random.Range(1000, 9999);
+			order.deliveryID = order.meal.deliveryID;
 			order.meal.deliveryID = order.deliveryID;
 			order.zone.deliveryID = order.deliveryID;
-
+			phone.UpdateOrderNumberText(order.deliveryID);
 
 			//Reset the timer
 			order.time = 0;
 
 			//Reset the order accepted/declined flags
-			order.acceptedOrder = false;
+			order.acceptedOrder = true;
 			order.declinedOrder = false;
 
-			//Show incoming order UI
-			phone.show = true;
-			phone.ChangeScreen(1);
 
 			//Show the meal preview
 			foreach (var mealPreview in phone.mealPreviews) {
+				Debug.Log(mealPreview.name == order.meal.prefabName);
 				mealPreview.gameObject.SetActive(false);
-				if (PrefabUtility.GetCorrespondingObjectFromSource(mealPreview).name ==
-					PrefabUtility.GetCorrespondingObjectFromSource(order.meal).name) {
-					mealPreview.gameObject.SetActive(true);
+				if (mealPreview.name == order.meal.prefabName) {
+					mealPreview.SetActive(true);
 				}
 			}
 		}
+	}
+
+	public void createOrder() {
+		//Get a list of all meals
+		var meals = Object.FindObjectsOfType<MealScript>();
+		meal = meals[Random.Range(0, meals.Length - 1)];
+
+		//Show incoming order UI
+		phone.ChangeScreen(1);
+		phone.show = true;
+	}
+
+	public void buttonAcceptOrder() {
+		acceptOrder(meal);
+	}
+
+	public void cancelOrder(float rating) {
+		dropFood();
+		
+		//null out the meal
+		order.meal = null;
+		
+		//Change back to the logo screen
+		phone.ChangeScreen(0);
+		
+		//Hide the phone
+		phone.show = false;
+		
+		//Pick a random zone
+		order.zone = null;
+
+		//Set the delivery ID
+		order.deliveryID = 0;
+		phone.UpdateOrderNumberText(0);
+
+		//Reset the timer
+		order.time = 0;
+
+		//Reset the order accepted/declined flags
+		order.acceptedOrder = false;
+		order.declinedOrder = true;
+		updateRating(rating != null && rating != 0 ? rating : 0.5f);
+	}
+
+	public void dropFood() {
+		if (order.meal.gameObject != null) {
+			Destroy(order.meal.gameObject);
+		}
+		player.meal = null;
 	}
 
 	//Creates the order
