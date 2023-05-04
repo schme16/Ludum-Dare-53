@@ -13,7 +13,7 @@ public class PlayerScript : MonoBehaviour {
 	public AudioSource wheelSound;
 	
 	public Transform mealHolder;
-	public float maxSprintTime = 3;
+	public float maxSprintTime = 2;
 	public float sprintTime = 0;
 	Rigidbody rb;
 	private Camera cam;
@@ -28,7 +28,7 @@ public class PlayerScript : MonoBehaviour {
 		speedModifier = 0;
 		if (Input.GetKey(KeyCode.LeftShift) && sprintTime < maxSprintTime) {
 			sprintTime += Time.deltaTime;
-			speedModifier = 15;
+			speedModifier = 25;
 		}
 
 		if (!Input.GetKey(KeyCode.LeftShift) && sprintTime > 0) {

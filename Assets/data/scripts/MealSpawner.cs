@@ -19,6 +19,7 @@ public class MealSpawner : MonoBehaviour {
 		MealScript meal = currentMeal.GetComponent<MealScript>();
 		meal.prefabName = mealPrefab.name;
 		meal.parent = this;
+		currentMeal.transform.rotation = transform.rotation;
 	}
 
 	// Update is called once per frame

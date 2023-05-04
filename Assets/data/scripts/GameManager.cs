@@ -4,6 +4,7 @@ using System.Net.Sockets;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.Networking;
 using UnityEngine.SceneManagement;
 
@@ -23,11 +24,14 @@ public class GameManager : MonoBehaviour {
 	public RectTransform star;
 	public DeliveryZone[] zones;
 	public int ratings;
+	public int realDeliveries;
 	public bool gameover = false;
 	public AudioSource sound;
 	public AudioClip newSound;
 	public AudioClip noSound;
 	public AudioClip seagull;
+	public Transform arrow;
+	public float gullAttackTimeout = 0;
 
 
 	public int cancelledOrders;
@@ -41,10 +45,14 @@ public class GameManager : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
+		if (gullAttackTimeout > 0) {
+			gullAttackTimeout = Mathf.Max(gullAttackTimeout - Time.deltaTime, 0);
+		}
+
 		if (Input.GetKeyDown(KeyCode.P)) {
 			showPopupWithFade("Test!");
-			createOrder();
-			buttonAcceptOrder();
+			/*createOrder();
+			buttonAcceptOrder();*/
 		}
 
 		if (meal == null) {
@@ -53,26 +61,52 @@ public class GameManager : MonoBehaviour {
 				createOrder();
 				acceptOrder(meal);
 				timeBetweenOrders = 0;
-				maxTimeBetweenOrders = Random.Range(3, 15);
+				maxTimeBetweenOrders = Random.Range(2, 10);
 			}
 		}
 		else {
 			if (order.time > order.allocatedDeliveryTime + 30) {
-				showPopupWithFade("Order Cancelled by Customer!");
-				cancelOrder(0.1f);
-				sound.PlayOneShot(noSound);
-				cancelledOrders++;
+				showPopupWithFade("Order Cancelled by Customer: " + 0 + " stars");
+				cancelOrder(0, true);
 			}
 		}
 
-		nah[0].gameObject.SetActive(cancelledOrders > 2.1f);
-		nah[1].gameObject.SetActive(cancelledOrders > 1.1f);
-		nah[2].gameObject.SetActive(cancelledOrders > 0.1f);
+		if (order.meal != null && player.meal == null) {
+			arrow.gameObject.SetActive(true);
+			arrow.LookAt(order.meal.transform);
+		}
+		else if (order.zone != null) {
+			arrow.gameObject.SetActive(true);
+			Vector3 oldArrowPosition = order.zone.transform.localPosition;
+			arrow.LookAt(order.zone.transform);
+			arrow.localPosition = oldArrowPosition;
+		}
+		else {
+			arrow.gameObject.SetActive(false);
+		}
+
+
+		if (cancelledOrders  == 1) {
+			nah[0].gameObject.SetActive(true);
+		}
+
+		else if (cancelledOrders  == 2) {
+			nah[1].gameObject.SetActive(true);
+		}
+
+		else if (cancelledOrders == 3) {
+			nah[2].gameObject.SetActive(true);
+		}
+
+		else if (cancelledOrders == 0) {
+			nah[0].gameObject.SetActive(false);
+			nah[1].gameObject.SetActive(false);
+			nah[2].gameObject.SetActive(false);
+		}
 
 
 		star.sizeDelta = new Vector2(starOrig.x * (rating / 5), starOrig.y);
-
-		if (!gameover && cancelledOrders >= 3) {
+		if (!gameover && cancelledOrders == 3) {
 			gameOver();
 		}
 	}
@@ -87,22 +121,27 @@ public class GameManager : MonoBehaviour {
 		if (correctOrder) {
 			//Was it under the allocated delivery time?
 			if (order.time <= order.allocatedDeliveryTime) {
-				showPopupWithFade("Order Delivered Successfully!");
-				cancelOrder(Random.Range(4f, 5f));
+				var stars = Random.Range(4f, 5f);
+				showPopupWithFade("Order Delivered Successfully: " + (stars.ToString("N1")) + " stars");
+				cancelOrder(stars);
+				realDeliveries++;
 			}
 
 			//Was it late?
 			else {
-				showPopupWithFade("Order Delivered Late!");
-				cancelOrder(Random.Range(2f, 3.5f));
+				var stars = Random.Range(2f, 3.5f);
+				showPopupWithFade("Order Delivered Late: " + (stars.ToString("N1")) + " stars");
+				cancelOrder(stars);
+				realDeliveries++;
 			}
 		}
 
 		//Was it the wrong order?
 		else {
-			showPopupWithFade("Wrong Order Delivered!");
-			cancelOrder(Random.Range(0.5f, 1.5f));
-			sound.PlayOneShot(noSound);
+			var stars = Random.Range(0.5f, 1.5f);
+			showPopupWithFade("Wrong Order Delivered: " + (stars.ToString("N1")) + " stars");
+			cancelOrder(stars, true);
+			realDeliveries++;
 		}
 	}
 
@@ -122,6 +161,8 @@ public class GameManager : MonoBehaviour {
 	//Accepts the order
 	public void acceptOrder(MealScript meal) {
 		if (order.meal == null) {
+			arrow.gameObject.SetActive(true);
+
 			sound.PlayOneShot(newSound);
 			phone.ChangeScreen(2);
 
@@ -175,9 +216,23 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void cancelOrder(float rating) {
+		cancelOrder(rating, false);
+	}
+
+	public void cancelOrder(float rating, bool penalty) {
+		//Add the penalty
+		if (penalty) {
+			sound.PlayOneShot(noSound);
+			cancelledOrders++;
+		}
+
+		//Remove the current food from the player
 		dropFood();
 
-		//null out the meal
+		//Hide the arrow
+		arrow.gameObject.SetActive(false);
+
+		//Null out the meal
 		order.meal = null;
 		meal = null;
 
@@ -201,7 +256,20 @@ public class GameManager : MonoBehaviour {
 		order.time = 0;
 
 
+		//Update the star rating
 		updateRating(rating != null && rating != 0 ? rating : 0.5f);
+	}
+
+	public void UICancelOrder() {
+		showPopupWithFade("Order Cancelled: 0 stars");
+		cancelOrder(0, true);
+	}
+
+	public void GullStoleFood() {
+		showPopupWithFade("Order Stolen by Seagulls: 0 stars");
+		gullAttackTimeout = 3;
+		cancelOrder(0, true);
+		sound.PlayOneShot(seagull);
 	}
 
 	public void dropFood() {
@@ -217,12 +285,13 @@ public class GameManager : MonoBehaviour {
 	public void gameOver() {
 		gameover = true;
 		int lastPB = PlayerPrefs.GetInt("pbDeliveries");
-		if (ratings > lastPB) {
-			PlayerPrefs.SetInt("pbDeliveries", ratings);
-			PlayerPrefs.SetString("pb", ratings + " Deliveries - " + rating.ToString().Substring(0, 3) + " Stars");
+		if (realDeliveries > lastPB) {
+			PlayerPrefs.SetInt("pbDeliveries", realDeliveries);
+			PlayerPrefs.SetString("pb",
+				realDeliveries + " Deliveries - " + rating.ToString().Substring(0, 3) + " Stars");
 		}
 
-		StartCoroutine(getRequest(rating.ToString(), ratings.ToString()));
+		StartCoroutine(getRequest(rating.ToString(), realDeliveries.ToString()));
 	}
 
 	//Creates the order

@@ -77,3 +77,4 @@ crashlytics-build.properties
 *.psd
 *.psd.meta
 server/
+Library.old/

@@ -17,7 +17,7 @@ public class SeagullScript : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		if (justFed) {
+		if (justFed || gm.player.meal == null) {
 			var step = retreatSpeed * Time.deltaTime; // calculate distance to move
 				transform.position = Vector3.MoveTowards(transform.position, nest.position, step);
 			
@@ -47,12 +47,10 @@ public class SeagullScript : MonoBehaviour {
 			player = other.transform.parent.transform.GetComponent<PlayerScript>();
 		}
 
-		if (player != null && justFed == false) {
-			gm.cancelOrder(0);
-			gm.sound.PlayOneShot(gm.seagull);
+		if (player != null && player.meal != null && justFed == false && gm.gullAttackTimeout == 0) {
 			justFed = true;
 			justFedTimer = 0;
-			gm.cancelledOrders++;
+			gm.GullStoleFood();
 		}
 	}
 }
